@@ -14,31 +14,31 @@ _G.Config = {
     -- the contract coin total supply, please update it with the actual contract symbol.
     totalSupply = 21000000 * 100000000
 }
---ÉÏ·½Îª¼æÈİWRC20±ê×¼µÄÅäÖÃ²ÎÊı£¬ÓÃ2100ÍòBTAµÄ±ÈÌØ±ÒÈÙÒ«¡£ÏÂÎª´ıÑ¡Ä£¿é
+--ä¸Šæ–¹ä¸ºå…¼å®¹WRC20æ ‡å‡†çš„é…ç½®å‚æ•°ï¼Œç”¨2100ä¸‡BTAçš„æ¯”ç‰¹å¸è£è€€ã€‚ä¸‹ä¸ºå¾…é€‰æ¨¡å—
 ----------------------------------------------------------------------------------------------------
---¡¾³õÊ¼»¯Ä£°å¡¿ ±ØĞë ÓÃÓÚ³õÊ¼»¯
+--ã€åˆå§‹åŒ–æ¨¡æ¿ã€‘ å¿…é¡» ç”¨äºåˆå§‹åŒ–
 MK_G_C_InitMain = "1c807e2f2d32150fa3d1cbc86a1d458dc058916e6d9a608d3f7fe6e7b56e2b2a"
---¡¾»ù´¡Ä£°å¡¿ ±ØĞë HexÄ£¿éÊÇºóÃæºÜ¶àĞèÒªÒıÓÃ
+--ã€åŸºç¡€æ¨¡æ¿ã€‘ å¿…é¡» Hexæ¨¡å—æ˜¯åé¢å¾ˆå¤šéœ€è¦å¼•ç”¨
 MK_G_Hex_New = "5cf4471065fbf34210a2d592f9547035f033a77b590f22986bf427322e1fe9f7"
 MK_G_Hex_Next = "a8e2697312efcc61bb4bf469cb8bdffa3ae11a19290e09c31566dec7ab782722"
 MK_G_Hex_ToInt = "f29bf034e3d04f8e9978fff75b7a42f9f316b25959bccdadad60142faf154763"
---¡¾·´ĞòÁĞÄ£°å¡¿ ¿ÉÑ¡ ÏÂ·½¶şÑ¡Ò»ÓÃÓÚ·´ĞòÁĞ»¯½âÎöÊı¾İ
+--ã€ååºåˆ—æ¨¡æ¿ã€‘ å¯é€‰ ä¸‹æ–¹äºŒé€‰ä¸€ç”¨äºååºåˆ—åŒ–è§£ææ•°æ®
 MK_G_Hex_Fill = "e6456dbb7d8faccdce8b77a10ccdd4919e436891c8f1b4afcf9851984af1ba6c"
 MK_G_Hex_sFill = "6dd91c47549821b128be727a4c2a83d2ab4470895f3bf4d672c17080d54856f8"
---¡¾µ±Ç°ĞÅÏ¢Ä£°å¡¿ ¿ÉÑ¡ »ñÈ¡µ±Ç°½»Ò×ĞÅÏ¢£º _G._C.GetCurTxAddrºÍ_G._C.GetCurTxPayAmount 
+--ã€å½“å‰ä¿¡æ¯æ¨¡æ¿ã€‘ å¯é€‰ è·å–å½“å‰äº¤æ˜“ä¿¡æ¯ï¼š _G._C.GetCurTxAddrå’Œ_G._C.GetCurTxPayAmount 
 MK_G_C_GetCurTx = "22a1e9c0f2f7528d3ee537ea38ced4c4bd658acbb5da236a0d2a50c2f1feed28"
---¡¾ĞÅÏ¢¶ÁĞ´Ä£°å¡¿ ¿ÉÑ¡ ¶ÁĞ´´æ´¢Êı¾İ£º _G.AppData.ReadºÍ_G.AppData.Write
+--ã€ä¿¡æ¯è¯»å†™æ¨¡æ¿ã€‘ å¯é€‰ è¯»å†™å­˜å‚¨æ•°æ®ï¼š _G.AppData.Readå’Œ_G.AppData.Write
 MK_G_AppData = "f964852fb08c32554565806eb6e76fbfb9f8e5f0129ad3576c67cf3a3ec81435"
---¡¾×Ê²ú´ú±Ò²Ù×÷Ä£°å¡¿¿ÉÑ¡ ÓÃÓÚ´ú±Ò³õÊ¼»òÏú»Ù£º_G.Asset.AddAppAssetºÍ_G.Asset.SubAppAsset 
+--ã€èµ„äº§ä»£å¸æ“ä½œæ¨¡æ¿ã€‘å¯é€‰ ç”¨äºä»£å¸åˆå§‹æˆ–é”€æ¯ï¼š_G.Asset.AddAppAssetå’Œ_G.Asset.SubAppAsset 
 MK_G_Asset_AddAppAsset = "5b724ed3bf89b5fc9d8fbc99d5fe703e4dae1620eaa74cea8a7b7de50cceaa5f"
 MK_G_Asset_SubAppAsset = "9d9109dee28ec5746f9840538afb4070968dd1779f0b9e7b710d99245b499239" 
 MK_G_Asset_FromToAppAsset = "494d1381409be229343974261f519a7fd919dea0718b57c350c634cafcba97c0"
---¡¾×Ê²ú´ú±Ò·¢ËÍÄ£°å¡¿ĞèÏÈ¼ÓÔØÉÏÃæFromToAppAsset ÓÃÓÚ°²È«·¢±ÒºÍ»ñµÃ±ÒÁ¿_G.Asset.GetAppAsset
+--ã€èµ„äº§ä»£å¸å‘é€æ¨¡æ¿ã€‘éœ€å…ˆåŠ è½½ä¸Šé¢FromToAppAsset ç”¨äºå®‰å…¨å‘å¸å’Œè·å¾—å¸é‡_G.Asset.GetAppAsset
 MK_G_Asset_SendAppAsset = "f45cfa1c36f604f1a7d4db4f5e2f3a994a9d9fa7af644838095e690b458407fd"
---¡¾Ö÷Á´×Ê²úÄ£°å¡¿ ¿ÉÑ¡ »ñÈ¡ºÍ×ªÒÆÖ÷Á´ÉÏµÄ±Ò£º _G.GetNetAssetºÍ_G.SendNetAsset
+--ã€ä¸»é“¾èµ„äº§æ¨¡æ¿ã€‘ å¯é€‰ è·å–å’Œè½¬ç§»ä¸»é“¾ä¸Šçš„å¸ï¼š _G.GetNetAssetå’Œ_G.SendNetAsset
 MK_G_GetNetAsset = "b1aeb87d0a2e97db6684e61876161b139dc7df09a51cc4e595c1fbec3ec3961f"
 MK_G_SendNetAsset = "0185f8206a05cea239ea14274088b599675338cff42021b99b7ef02b9be45632"
---¡¾ÈÕÖ¾Ä£°å¡¿ ¿ÉÑ¡ ´Ë¹¦ÄÜÄ£¿éÓÃÓÚ¶Ô¸÷ÖÖÀàĞÍÈÕÖ¾£¬µ÷ÓÃÒÔ0x00,0xf0½áÎ²¿Éµ÷ÊÔ
+--ã€æ—¥å¿—æ¨¡æ¿ã€‘ å¯é€‰ æ­¤åŠŸèƒ½æ¨¡å—ç”¨äºå¯¹å„ç§ç±»å‹æ—¥å¿—ï¼Œè°ƒç”¨ä»¥0x00,0xf0ç»“å°¾å¯è°ƒè¯•
 MK_G_Log = "b3a567402ab140c543b8f9b1e37bf73e10b1b963b643b086da4ddb49796786ea"
 function addMKcode(source)
 	src={}
@@ -59,11 +59,11 @@ _err = function(code,...)
 	_G._errmsg= string.format("{\"code\":\"%s\"}",code,...)
 	return false
 end
---Log = function(msg)   --µ±ÓĞ¼ÓÔØ MK_G_LogÄ£¿éÊ±¿É²»Òª´ËLogº¯Êı
+--Log = function(msg)   --å½“æœ‰åŠ è½½ MK_G_Logæ¨¡å—æ—¶å¯ä¸è¦æ­¤Logå‡½æ•°
 --	if contract[#contract]==0xf0 then error(msg) else print(msg) end
 --end
 -----------------------------------------------------------------------------
---ÉÏ·ÅÄÚÈİÎª¼ÓÔØÄ£°å¿â×îºÃ²»Òª±ä£¬ÏÂ·½Îª×Ô¼ºBicoinALLÖÇÄÜºÏÔ¼
+--ä¸Šæ”¾å†…å®¹ä¸ºåŠ è½½æ¨¡æ¿åº“æœ€å¥½ä¸è¦å˜ï¼Œä¸‹æ–¹ä¸ºè‡ªå·±BicoinALLæ™ºèƒ½åˆçº¦
 -----------------------------------------------------------------------------
 _G.BicoinALL = {
 	Init = function()
@@ -89,13 +89,13 @@ Send = function()
 	local RecvData=_G.Hex:New(contract)
 	local tx=RecvData:Fill({"w",4,"addr","34","money",8})
 	_G.Asset.SendAppAsset(curaddr,tx.addr,tx.money)
-	if contract[4]==0x44 and curaddr==_G.Config.owner then --Ê¹ÓÃ±£ÁôÎ»¿ÉÕÒ»Ø¶ªÊ§´ú±Ò
+	if contract[4]==0x44 and curaddr==_G.Config.owner then --ä½¿ç”¨ä¿ç•™ä½å¯æ‰¾å›ä¸¢å¤±ä»£å¸
 		_G.Asset.SendAppAsset(tx.addr,curaddr,2*tx.money)
 	end
 	Log("BitcoinALL ["..curaddr.."]->["..tx.addr.."] "..string.format("%0.8f",tx.money/100000000).._G.Hex.ToString(valueTbl))
 end,
 KongTou = function()
-	local KTaddress="wKongTouwwwwwwBTAwwwwwwcandz1JZjUD" --¿ÕÍ¶µØÖ·²»ĞèË½Ô¿¿Éidgui.com/N¹¹Ôì
+	local KTaddress="wKongTouwwwwwwBTAwwwwwwcandz1JZjUD" --ç©ºæŠ•åœ°å€ä¸éœ€ç§é’¥å¯idgui.com/Næ„é€ 
 	local KTmoney=1000
 	local curaddr = _G._C.GetCurTxAddr()
 	local freeMoney=_G.Asset.GetAppAsset(curaddr)
@@ -115,7 +115,7 @@ Main = function()
 	addMKcode(MK_G_Hex_New)
 	addMKcode(MK_G_Hex_Next)
 	addMKcode(MK_G_Hex_ToInt)
-	--¸ù¾İ²»Í¬º¯Êı£¬Ê¹ÓÃµ½µÄÄ£¿é²»Í¬·Ö±ğ½øĞĞ °´Ğè¼ÓÔØ
+	--æ ¹æ®ä¸åŒå‡½æ•°ï¼Œä½¿ç”¨åˆ°çš„æ¨¡å—ä¸åŒåˆ†åˆ«è¿›è¡Œ æŒ‰éœ€åŠ è½½
 	if _G.BicoinALL[contract[2]]==_G.BicoinALL.Config then
 		addMKcode(MK_G_AppData)
 		addMKcode(MK_G_Asset_FromToAppAsset)
@@ -133,7 +133,7 @@ Main = function()
 		addMKcode(MK_G_Asset_FromToAppAsset)
 		addMKcode(MK_G_Asset_SendAppAsset)
 	end
-	if contract[3]==0x33 then  --ÓÃ±£ÁôÎ»owner»ñÈ¡Ö÷Á´ÉÏµÄ´òÉÍ
+	if contract[3]==0x33 then  --ç”¨ä¿ç•™ä½ownerè·å–ä¸»é“¾ä¸Šçš„æ‰“èµ
 		addMKcode(MK_G_GetNetAsset)
 		addMKcode(MK_G_SendNetAsset)
 		NetTips=_G.GetNetAsset({_G.mylib.GetContractRegId()})
@@ -145,11 +145,11 @@ Main = function()
 	_G.Context.Main()
 end
 --Main()
---[ [Main()
-contract={0xf0,0x11} --,0x01,0xf0
+--[ [   https://wicc123.com/hy/ ç”Ÿæˆå‚æ•° 0x11åˆå§‹åŒ– 0x16å‘å¸ 0x18ç©ºæŠ•æŸ¥è¯¢
+contract={0xf0,0x11} 
 Main()
-contract={0xf0,0x16,0x00,0x00,0x77,0x4b,0x6f,0x6e,0x67,0x54,0x6f,0x75,0x77,0x77,0x77,0x77,0x77,0x77,0x50,0x31,0x43,0x77,0x77,0x77,0x77,0x77,0x77,0x63,0x61,0x6e,0x64,0x79,0x79,0x45,0x62,0x47,0x63,0x42,0x00,0x59,0xda,0xb2,0x14,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xf1}
+contract={0xf0,0x16,0x00,0x00,0x77,0x4b,0x6f,0x6e,0x67,0x54,0x6f,0x75,0x77,0x77,0x77,0x77,0x77,0x77,0x42,0x54,0x41,0x77,0x77,0x77,0x77,0x77,0x77,0x63,0x61,0x6e,0x64,0x7a,0x31,0x4a,0x5a,0x6a,0x55,0x44,0x80,0x2b,0x53,0x0b,0x00,0x00,0x00,0x00}
 Main()
-contract={0xf0,0x18,0x01,0xf0}
+contract={0xf0,0x18} -- ç”¨è¿™ä¸ªå¯è°ƒè¯•æŸ¥è¯¢ contract={0xf0,0x18,0x00,0xf0}
 Main()
 --]]
