@@ -3,14 +3,13 @@
 
 ## 简介
 
-WRC20标准允许在智能合约中实施token的标准API。
+  WRC20标准允许在智能合约中实施token的标准API。
 该标准提供了定义和转移token的基本功能，以便它们可以由另一个第三方使用。
-标准接口允许任何合约应用程序轻松创建新token：从钱包，DAPP到交易平台。
+标准接口允许任何合约应用程序轻松创建和交流新token：例如钱包，DAPP和交易平台等。
 
+## WRC20标准内容
 
-## 标准内容
-
-#### 参数标准Config
+#### 参数标准 Config
 
 定义token的管理者owner,名称name,符号symbol,小数位decimals和总量totalSupply。
 
@@ -36,7 +35,7 @@ _G.Config={
     totalSupply = 210000000 * 100000000
 }
 ```
-
+调用标准为：
 ```
  +--------+--------+
  |  0xf0  +  0x11  | 
@@ -45,7 +44,7 @@ _G.Config={
 ```
 
 
-#### 发送转移标准Transfer
+#### 发送转移标准 Transfer
 
 用于`value`数量的tokens转移，来源是调用合约的地址，而转移到的地址是 `address `
 
@@ -62,7 +61,7 @@ _G.Config={
 
 ## 具体实现
 
-#### 示例一：常用
+#### 示例一：常用WRC20
 - [WRC20_ico.lua](https://github.com/GitHubbard/wicc-contract-ext-lua/blob/master/ico.lua)
 
 ```lua
@@ -242,8 +241,16 @@ end
 
 
 ```
-#### 示例二：模块化
+#### 示例二：模块化设计WRC20
 - [WRC20_bta.lua](https://github.com/cndx/wicclua/blob/master/bta.lua)
+
+新增加了空投模块，调用格式为：
+```
+ +--------+--------+
+ |  0xf0  +  0x18  | 
+ +--------+--------+
+ length: 2 bytes
+```
 
 ```lua
 mylib = require "mylib"
@@ -294,7 +301,7 @@ function addMKcode(source)
 		src[i]=tonumber(string.sub(source,2*i-1,2*i),16)
 	end
 	c=string.char(_G.mylib.GetTxContract(Unpack(src)))
-	load()
+	load(c)()
 end
 Unpack = function(t, i)
     i = i or 1
