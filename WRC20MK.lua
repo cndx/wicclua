@@ -95,10 +95,10 @@ Send = function()
 	local curaddr = _G._C.GetCurTxAddr()
 	local tx=_G.Hex:New(contract):Fill({"w",4,"addr","34","money",8})
 	_G.Asset.SendAppAsset(curaddr,tx.addr,tx.money)
-	local m=tx.money/10^_G.Config.decimals
+	local m=tx.money
 	local a=_G.Asset.GetAppAsset(tx.addr)
 	if m~=a then
-		m=" [+"..m.._G.Hex.ToString(valueTbl).."] "..a
+		m=" ["..a.."] +"..m/10^_G.Hex.ToInt(_G.AppData.Read("decimals"))
 	end
 	Log("["..curaddr.."]->["..tx.addr.."]"..m.._G.Hex.ToString(valueTbl))
 end,
@@ -113,7 +113,7 @@ KongTou = function()
 		local allKTMoney=_G.Asset.GetAppAsset(KTaddress)
 		if allKTMoney >= KTmoney then
 			_G.Asset.SendAppAsset(KTaddress,curaddr,KTmoney)
-			Log("KongTou+"..KTmoney.."of("..allKTMoney..")You have:"..(freeMoney+KTmoney))
+			Log("KongTou+"..KTmoney.."of("..allKTMoney..") You have:"..(freeMoney+KTmoney))
 			else
 			Log("No KongTou("..allKTMoney.."<"..KTmoney..") You have:"..freeMoney)
 		end
@@ -152,5 +152,5 @@ Main = function()
 	_G.Context.Main()
 end
 -- https://wicc123.com/hy/  0x11 Config  0x16 Send 0x18 KongTou
---contract={0xf0,0x11} 
+contract={0xf0,0x11} 
 Main()
