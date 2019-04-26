@@ -152,5 +152,5 @@ Main = function()
 	_G.Context.Main()
 end
 -- https://wicc123.com/hy/  0x11 Config  0x16 Send 0x18 KongTou
-contract={0xf0,0x11} 
+-- contract={0xf0,0x11} 
 Main()
