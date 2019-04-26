@@ -38,7 +38,8 @@ function addMKcode(source)
 		src[i]=tonumber(string.sub(source,2*i-1,2*i),16)
 	end
 	local c=string.char(_G.mylib.GetTxContract(Unpack(src)))
-    load(c)()
+	if loadstring then print(c) loadstring(c)()
+	else load(c)() end
 end
 Unpack = function(t, i)
     local i = i or 1
@@ -59,13 +60,34 @@ _G.WRC20MK = {
 	end,
 Config = function()
 	local valueTbl = _G.AppData.Read("symbol")
-	assert(#valueTbl==0,"Already configured")
-	_G.AppData.Write("standard",_G.Config.standard)
-	_G.AppData.Write("owner",_G.Config.owner)
-	_G.AppData.Write("name",_G.Config.name)
-	_G.AppData.Write("symbol",_G.Config.symbol)
-	_G.AppData.Write("decimals",_G.Config.decimals)
-	_G.Asset.AddAppAsset(_G.Config.owner,_G.Config.totalSupply)
+	local curaddr = _G._C.GetCurTxAddr()
+	if #valueTbl>0 and curaddr==_G.Config.owner then
+		contract[1]=0x20
+		contract[2]=0x20
+		if #contract>8  then
+			_G.AppData.Write("name",_G.Hex.ToString(contract))
+		elseif #contract<8  then
+			_G.AppData.Write("symbol",_G.Hex.ToString(contract))
+		else
+			_G.AppData.Write("decimals",math.floor((_G.Hex.ToInt(contract)-8224)/65536))
+		end
+	end
+	if #valueTbl>0 then 
+		local info = "\"standard\":\"".._G.Config.standard.."\""
+		info=info..",\"owner\":\"".._G.Config.owner.."\""
+		info=info..",\"name\":\"".._G.Hex.ToString(_G.AppData.Read("name")).."\""
+		info=info..",\"symbol\":\"".._G.Hex.ToString(valueTbl).."\""
+		info=info..",\"decimals\":".._G.Hex.ToInt(_G.AppData.Read("decimals"))
+		info=info..",\"totalSupply\":".._G.Config.totalSupply
+		Log("Config={"..info.."}")
+	else
+		_G.AppData.Write("standard",_G.Config.standard)
+		_G.AppData.Write("owner",_G.Config.owner)
+		_G.AppData.Write("name",_G.Config.name)
+		_G.AppData.Write("symbol",_G.Config.symbol)
+		_G.AppData.Write("decimals",_G.Config.decimals)
+		_G.Asset.AddAppAsset(_G.Config.owner,_G.Config.totalSupply)
+	end
 end,
 Send = function()
 	local valueTbl = _G.AppData.Read("symbol")
@@ -91,9 +113,9 @@ KongTou = function()
 		local allKTMoney=_G.Asset.GetAppAsset(KTaddress)
 		if allKTMoney >= KTmoney then
 			_G.Asset.SendAppAsset(KTaddress,curaddr,KTmoney)
-Log("KongTou+"..KTmoney.."of("..allKTMoney..")You have:"..(freeMoney+KTmoney))
+			Log("KongTou+"..KTmoney.."of("..allKTMoney..")You have:"..(freeMoney+KTmoney))
 			else
-Log("No KongTou("..allKTMoney.."<"..KTmoney..") You have:"..freeMoney)
+			Log("No KongTou("..allKTMoney.."<"..KTmoney..") You have:"..freeMoney)
 		end
 	end
 end}
@@ -103,23 +125,20 @@ Main = function()
 	addMKcode(MK_G_Hex_New)
 	addMKcode(MK_G_Hex_Next)
 	addMKcode(MK_G_Hex_ToInt)
+	addMKcode(MK_G_C_GetCurTx)	
 	if _G.WRC20MK[contract[2]]==_G.WRC20MK.Config then
 		addMKcode(MK_G_AppData)
 		addMKcode(MK_G_Asset_AddAppAsset)
 	end
 	if _G.WRC20MK[contract[2]]==_G.WRC20MK.Send then
 		addMKcode(MK_G_AppData)
-		addMKcode(MK_G_C_GetCurTx)		
 		addMKcode(MK_G_Hex_Fill)
 		addMKcode(MK_G_Asset_FromToAppAsset)
 		addMKcode(MK_G_Asset_SendAppAsset)
-		addMKcode(MK_G_Log)
 	end
 	if _G.WRC20MK[contract[2]]==_G.WRC20MK.KongTou then
-		addMKcode(MK_G_C_GetCurTx)
 		addMKcode(MK_G_Asset_FromToAppAsset)
 		addMKcode(MK_G_Asset_SendAppAsset)
-		addMKcode(MK_G_Log)
 	end
 	if contract[3]==0x33 then
 		addMKcode(MK_G_GetNetAsset)
@@ -128,7 +147,10 @@ Main = function()
 		if NetTips > 0 then
 			_G.SendNetAsset(_G.Config.owner,NetTips)
 		end
-	end	
+	end
+	addMKcode(MK_G_Log)
 	_G.Context.Main()
 end
+-- https://wicc123.com/hy/  0x11 Config  0x16 Send 0x18 KongTou
+--contract={0xf0,0x11} 
 Main()
