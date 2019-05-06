@@ -84,7 +84,7 @@ WRC20魔法数0xf0，方法是对应0x11，方法的内容是将上面的参数�
 
 #### 示例一：常用WRC20
 - [WRC20_ico.lua](https://github.com/GitHubbard/wicc-contract-ext-lua/blob/master/ico.lua)
-- [WRC20 Sample](https://www.wiccdev.org/book/zh-hans/Contract/ico_sample.html)
+- [WRC20 Sample](https://www.wiccdev.org/book/en/Contract/ico_sample.html)
 
 
 #### 示例二：模块化设计WRC20
