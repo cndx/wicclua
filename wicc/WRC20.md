@@ -2,7 +2,7 @@
 title: WRC20 Token Standard
 author: cndx
 type: Standards
-status: Draft
+status: Final
 created: 2019-05-06
 ---
 
@@ -11,8 +11,7 @@ created: 2019-05-06
 
 ## Abstract
 
-The following standard allows for the implementation of a standard API for tokens within smart contracts.
-This standard provides basic functionality to transfer tokens, as well as allows tokens to be approved so they can be spent by another on-chain third party.
+The following standard allows for the implementation of a standard for tokens within waykichain LUA smart contracts.　This standard provides basic functionality to transfer tokens, as well as allows tokens to be approved so they can be spent by another third party, like Wallet , DAPP and Exchange.
 
 
 ## Standard
@@ -30,10 +29,10 @@ _G.Config={
     owner = "wMHkGQKHf4CXdZRRoez8b9YgYnPzGxbs3j",
 
     -- the contract name, please update it with the actual contract name.
-    name = "WRC20N",
+    name = "WRC20 Name",
 
     -- the contract symbol, please update it with the actual contract symbol.
-    symbol = "WRC20S",
+    symbol = "WRC",
 
     -- the number of decimals the token uses must be 8.
     -- means to divide the token amount by 100000000 to get its user representation.
@@ -50,7 +49,11 @@ _G.Config={
  +--------+--------+
  length: 2 bytes
 ```
-
+　1.Use `_G.mylib.WriteData` : every variable in `_G.Config` write to blockchain.
+ 
+  2.Use `_G.mylib.WriteOutAppOperate` : add  `totalSupply` amount of tokens to `owner` address.
+  
+  ***Notice:Only run once , more times shoud skip.***
 
 #### Transfer_Send 0x16
 
@@ -60,10 +63,12 @@ _G.Config={
  +--------+--------+-----------------+---------------------------------------+-----------------------+
  length: 2+2+34+8 = 46 bytes
 ```
-Transfers `value` amount of tokens to `address `, and MUST fire the `Transfer` event.
-The function SHOULD `throw` if the `from` account balance does not have enough tokens to spend.
+  Transfers `value` amount of tokens form `_G.mylib.GetCurTxAccount` to `address `.
+  
+  White place 0x00 + 0x00 is not definded in WRC20 , you can use it in your contracts.
 
-***Notice:All event triggers must be the result of the execution of the contract method and cannot be called externally.***
+***Notice:Should set config frist , before transfer send tokens.***
+
 
 ## Implementation
 
@@ -79,3 +84,9 @@ The function SHOULD `throw` if the `from` account balance does not have enough t
  +--------+--------+
  length: 2 bytes
 ```
+
+## Links
+
+zh-cn Version：https://github.com/cndx/wicclua/blob/master/wicc/WRC20_zh-cn.md
+
+WaykiChain Developer Documentation：https://www.wiccdev.org/book/zh-hans/Contract/ico_sample.html
