@@ -182,6 +182,21 @@ mylib = {}
 --[[ mylib = require "mylib"
 ----正式合约中需要上面那行开始，包含下面的模块加载内容--------------------------------------------
 --https://WiccM.com 可在这里选择模块
+_G.Config={
+    -- the waykichain contract stardard, if you do not know the waykichain stardard, please do not change it.
+    standard = "WRC20",
+    -- the contract ownder address, please update it with the actual contract owner address.
+    owner = "wcNx9o2RnDpSjpwvdLzWy2t1DJFhqLazxL",
+    -- the contract name, please update it with the actual contract name.
+    name = "BitcoinALL.org BTCALL.org",
+    -- the contract symbol, please update it with the actual contract symbol.
+    symbol = "BTA",
+    -- the number of decimals the token uses must be 8.
+    -- means to divide the token amount by 100000000 to get its user representation.
+    decimals = 8,
+    -- the contract coin total supply, please update it with the actual contract symbol.
+    totalSupply = 21000000 * 100000000
+}
 MK_G_Context_Init = "c1f6596af403e97e3b71993f0c11c8f12fc30c2e90f71f12f23694576a5a6edf"
 MK_G_Hex = "e228a3d2506a165f37ac1e0481774836f61adfb9ef1f0f4967dc2ebacda35d8b"
 MK_G_Log = "1d4eb0db31e08022b5e849b85b3e63a3e1866cd63e14bdeff98299ef9f5cb80b"
