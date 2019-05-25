@@ -191,6 +191,8 @@ MK_G_Random = "2a845df7edc1179c5acf6fe43d75b03dcacf584c836198190e44226940fb0a76"
 MK_G_NetAsset = "b314e1c08ee6f3198eb918f7a6610baf7d1c485c8d0de3c470e1a99aee5e4241"
 MK_G_AppData = "5b49520500292cb3936400f77105dbef5c98b82655c2ba90053a18497207fa29"
 MK_G_GetCurTx = "642c043faa8fb931f041381b23c6591f3566fecb2f1644cfbf696df6b9de7493"
+MK_G_Asset = "59f942f214534c487c64e9ce954c5fabbad3ac7715f6a908b9ad4432f66331ce"
+MK_G_ERC20MK = "8de13f70dbbd7f5974e9180fe7b94a4598369a30de3481dbdd606f3dfb71f856"
 --上面是正式网络，下面是测试网络
 MK_G_Context_Init = "83d3fc6c1a515035a26a1af8b2471ea7822b32910655941cce9c5c4728dcc4f2"
 MK_G_Hex = "174910d20ecd4d4c0b6e934308c69d93d7cb47acb0630af919034fe648586095"
@@ -201,6 +203,8 @@ MK_G_Random = "3bea95c6619ff2ab888983484c115408d644069b1c5ce4248214ec33726cb021"
 MK_G_NetAsset = "b98f942ca611b553ad53812395a51dbeca2fed12f518051da85d8a6f8410e299"
 MK_G_AppData = "a68bdfb3aa30c64a3088e1fe3ebd2527c187cc93d3ecc0af0bb8724ef2491fef"
 MK_G_GetCurTx = "39b99713d1c4b5d89100a74f71bfca8039d349e38dfb5d2543accc8efb6c77d8"
+MK_G_Asset = "a4c4595735db65433822cb1c4b6c6dc47b7ac9a215a41393ba3947d8dd48cde1"
+MK_G_ERC20MK = "193bc067300d385176701286f9f5deb1f5527aff3ae637b6f19aa8eda0065628"
 function addMKcode(source)
 	local src={}
 	for i=1,32 do
@@ -227,6 +231,8 @@ end
 _G.BicoinALL = {
 	Init = function()
 		_G.Context.Event[0xf0]=_G.BicoinALL
+		_G.BicoinALL[0x11]=_G.ERC20MK.Config
+		_G.BicoinALL[0x16]=_G.ERC20MK.Transfer
 		_G.BicoinALL[0x33]=_G.BicoinALL.MyLog
 	end,
 MyLog = function()
@@ -235,6 +241,7 @@ end
 }
 Main = function()
 addMKcode(MK_G_Context_Init)
+addMKcode(MK_G_ERC20MK)
 _G.Context.Init(_G.BicoinALL)
 addMKcode(MK_G_Hex)
 addMKcode(MK_G_Log)
@@ -244,6 +251,7 @@ addMKcode(MK_G_Random)
 addMKcode(MK_G_NetAsset)
 addMKcode(MK_G_AppData)
 addMKcode(MK_G_GetCurTx)
+addMKcode(MK_G_Asset)
 _G.Context.Main()
 end
 contract={0xf0,0x33,0x00,0xf0} --f03300f0
