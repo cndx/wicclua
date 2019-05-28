@@ -89,7 +89,7 @@ Tips= function()
 	local tipsBack=100
 	local tips = _G.AppData.Read("tips")
 	if #tips ~= 0 then
-		tipsBack=math.min(tipsBack,math.floor(_G.Hex.ToInt(tips)/655360000))
+		tipsBack=math.min(tipsBack,math.floor(_G.Hex.ToInt(tips)/65536)/10000)
 	end
 	if curaddr==_G.Config.owner then
 		contract[1]=0x00
