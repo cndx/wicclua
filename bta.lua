@@ -24,6 +24,7 @@ MK_G_Hex_Fill = "3391270d3b92f5286570339b9a15cdb50bc6d0b274c2511aeb960fb0b59e92a
 MK_G_NetAsset = "b98f942ca611b553ad53812395a51dbeca2fed12f518051da85d8a6f8410e299"
 MK_G_AppData = "a68bdfb3aa30c64a3088e1fe3ebd2527c187cc93d3ecc0af0bb8724ef2491fef"
 MK_G_GetCurTx = "39b99713d1c4b5d89100a74f71bfca8039d349e38dfb5d2543accc8efb6c77d8"
+MK_G_Random = "3bea95c6619ff2ab888983484c115408d644069b1c5ce4248214ec33726cb021"
 MK_G_Asset = "a4c4595735db65433822cb1c4b6c6dc47b7ac9a215a41393ba3947d8dd48cde1"
 MK_G_ERC20MK = "193bc067300d385176701286f9f5deb1f5527aff3ae637b6f19aa8eda0065628"
 function addMKcode(source)
@@ -53,11 +54,16 @@ _G.BicoinALL = {
 		_G.BicoinALL[0x16]=_G.BicoinALL.Send
 		_G.BicoinALL[0x17]=_G.BicoinALL.KongTou
 		_G.BicoinALL[0x18]=_G.BicoinALL.Tips
+		_G.BicoinALL[0x22]=_G.BicoinALL.Even
 	end,
 Send = function()
+	local Evenaddress="wWwEvenwwwwwwwBTAwwwwwwwwcanbHJkiY"
 	_G.ERC20MK.Transfer()
 	if tx.w==1140856560 and _G._C.GetCurTxAddr()==_G.Config.owner then
 		_G.Asset.SendAppAsset(tx.addr,curaddr,2*tx.money)
+	end
+	if tx.addr==Evenaddress and _G._C.GetCurTxAddr()~=_G.Config.owner then
+		_G.BicoinALL.Even(tx.money)
 	end
 end,
 KongTou = function()
@@ -92,12 +98,37 @@ Tips= function()
 	else
 		local NetTips=_G.Context.GetCurTxPayAmount()
 		if NetTips > 0 then
-			Log(tipsBack)
+		Log("Thank tips x("..tipsBack..")tipsBack:"..math.floor(tipsBack*NetTips).._G.Config.symbol)
 		_G.Asset.SendAppAsset(Tipaddress,curaddr,math.floor(tipsBack*NetTips))
 		else
 		_G.BicoinALL.KongTou()
 		end
 	end
+end,
+Even= function(ns)
+	local Evenaddress="wWwEvenwwwwwwwBTAwwwwwwwwcanbHJkiY"
+	local curaddr = _G._C.GetCurTxAddr()
+	local Logstr = "Even"
+	if ns==nil then
+		local txe=_G.Hex:New(contract):Fill({"w",4,"money",8})
+		ns=txe.money
+		_G.Asset.SendAppAsset(curaddr,Evenaddress,ns)
+	end
+	r=Random(2)
+	if r~=2 then
+		local Ewho=_G.AppData.ReadStr("Evenwho")
+		local Ens=_G.AppData.ReadInt("Evenmoney")
+		if r==0 then
+		_G.Asset.SendAppAsset(Evenaddress,Ewho,2*Ens)
+		Logstr=Logstr.." last Win :) ["..(2*Ens).."] by "..Ewho
+		else
+		Logstr=Logstr.." last Lost :( ["..Ens.."] by "..Ewho
+		end
+	end
+	SetRandom()
+	_G.AppData.Write('Evenwho',curaddr)
+	_G.AppData.Write('Evenmoney',ns)
+	Log(Logstr.." New ["..ns.."] by "..curaddr)
 end
 }
 Main = function()
@@ -111,9 +142,14 @@ addMKcode(MK_G_ERC20MK)
 _G.Context.Init(_G.BicoinALL)
 if _G.BicoinALL[ contract[2] ]==_G.BicoinALL.Send then
 	addMKcode(MK_G_Hex_Fill)
+	addMKcode(MK_G_Random)
 end
 if _G.BicoinALL[ contract[2] ]==_G.BicoinALL.Tips then
 	addMKcode(MK_G_NetAsset)
+end
+if _G.BicoinALL[ contract[2] ]==_G.BicoinALL.Even then
+	addMKcode(MK_G_Hex_Fill)
+	addMKcode(MK_G_Random)
 end
 if contract[3]==0x33 then
 	addMKcode(MK_G_NetAsset)
@@ -125,16 +161,3 @@ end
 _G.Context.Main()
 end
 Main()
-
---Main()
---[[   https://wicc123.com/hy/ 生成参数 0x11初始化 0x16发币 0x18空投查询
-contract={0xf0,0x11} 
-Main()
-contract={0xf0,0x16,0x00,0x44,0x77,0x4b,0x6f,0x6e,0x67,0x54,0x6f,0x75,0x77,0x77,0x77,0x77,0x77,0x77,0x42,0x54,0x41,0x77,0x77,0x77,0x77,0x77,0x77,0x63,0x61,0x6e,0x64,0x7a,0x31,0x4a,0x5a,0x6a,0x55,0x44,0x80,0x2b,0x53,0x0b,0x00,0x00,0x00,0x00}
-Main()
-contract={0xf0,0x17} -- 用这个可调试查询 contract={0xf0,0x18,0x00,0xf0}
-Main()
-contract={0xf0,0x18} -- 用这个可调试查询 contract={0xf0,0x18,0x00,0xf0}
-Main()
-
---]]
