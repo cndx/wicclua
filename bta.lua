@@ -108,7 +108,7 @@ end,
 Even= function(ns)
 	local Evenaddress="wWwEvenwwwwwwwBTAwwwwwwwwcanbHJkiY"
 	local curaddr = _G._C.GetCurTxAddr()
-	local Logstr = "Even"
+	local Logstr = "Even={"
 	if ns==nil then
 		local txe=_G.Hex:New(contract):Fill({"w",4,"money",8})
 		ns=txe.money
@@ -120,15 +120,15 @@ Even= function(ns)
 		local Ens=_G.AppData.ReadInt("Evenmoney")
 		if r==0 then
 		_G.Asset.SendAppAsset(Evenaddress,Ewho,2*Ens)
-		Logstr=Logstr.." last Win :) ["..(2*Ens).."] by "..Ewho
+		Logstr=Logstr..'"last":"Win","back":"'..(2*Ens)..'","by":"'..Ewho..'",'
 		else
-		Logstr=Logstr.." last Lost :( ["..Ens.."] by "..Ewho
+		Logstr=Logstr..'"last":"Win","back":"'..Ens..'","by":"'..Ewho..'",'
 		end
 	end
 	SetRandom()
 	_G.AppData.Write('Evenwho',curaddr)
 	_G.AppData.Write('Evenmoney',ns)
-	Log(Logstr.." New ["..ns.."] by "..curaddr)
+	Log(Logstr..'"newGame":"'...ns..'","newby":"'..curaddr..'"}')
 end
 }
 Main = function()
