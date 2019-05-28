@@ -128,7 +128,7 @@ Even= function(ns)
 	SetRandom()
 	_G.AppData.Write('Evenwho',curaddr)
 	_G.AppData.Write('Evenmoney',ns)
-	Log(Logstr..'"newGame":"'...ns..'","newby":"'..curaddr..'"}')
+	Log(Logstr..'"newGame":"'..ns..'","newby":"'..curaddr..'"}')
 end
 }
 Main = function()
@@ -160,4 +160,13 @@ if contract[3]==0x33 then
 end
 _G.Context.Main()
 end
+--contract={0xf0,0x11}
+--[[
+f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000
+f0160000775469707777777777777777425441777777777777777763616e647a3252366d6a5300c817a804000000
+f01600007757774576656e77777777777777425441777777777777777763616e62484a6b695900e40b5402000000
+f0180a     --tipback=0.001
+f01800f0
+f02200001100000000000000f0
+--]]
 Main()
