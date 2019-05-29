@@ -122,7 +122,7 @@ Even= function(ns)
 		_G.Asset.SendAppAsset(Evenaddress,Ewho,2*Ens)
 		Logstr=Logstr..'"last":"Win","back":"'..(2*Ens)..'","by":"'..Ewho..'",'
 		else
-		Logstr=Logstr..'"last":"Win","back":"'..Ens..'","by":"'..Ewho..'",'
+		Logstr=Logstr..'"last":"Lose","back":"'..Ens..'","by":"'..Ewho..'",'
 		end
 	end
 	SetRandom()
