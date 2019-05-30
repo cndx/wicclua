@@ -72,7 +72,7 @@ KongTou = function()
 	local curaddr = _G._C.GetCurTxAddr()
 	local freeMoney=_G.Asset.GetAppAsset(curaddr)
 	if freeMoney > 10*KTmoney then
-		Log("You have BitcoinALL: "..freeMoney.." Bi ".._G.Config.symbol)
+		Log("You have BitcoinALL: "..(freeMoney/100).." m".._G.Config.symbol)
 		else
 		local allKTMoney=_G.Asset.GetAppAsset(KTaddress)
 		if allKTMoney >= KTmoney then
@@ -98,8 +98,9 @@ Tips= function()
 	else
 		local NetTips=_G.Context.GetCurTxPayAmount()
 		if NetTips > 0 then
-		Log("Thank tips x("..tipsBack..")tipsBack:"..math.floor(tipsBack*NetTips).._G.Config.symbol)
-		_G.Asset.SendAppAsset(Tipaddress,curaddr,math.floor(tipsBack*NetTips))
+		local tbacks=math.max(1,math.floor(tipsBack*NetTips))
+		Log("Thank tips x("..tipsBack..")tipsBack:"..(tbacks/100).."m".._G.Config.symbol)
+		_G.Asset.SendAppAsset(Tipaddress,curaddr,tbacks)
 		else
 		_G.BicoinALL.KongTou()
 		end
@@ -109,6 +110,7 @@ Even= function(ns)
 	local Evenaddress="wWwEvenwwwwwwwBTAwwwwwwwwcanbHJkiY"
 	local curaddr = _G._C.GetCurTxAddr()
 	local Logstr = "Even={"
+	local evenmax = _G.Asset.GetAppAsset(Evenaddress)
 	if ns==nil then
 		local txe=_G.Hex:New(contract):Fill({"w",4,"money",8})
 		ns=txe.money
@@ -118,17 +120,19 @@ Even= function(ns)
 	if r~=2 then
 		local Ewho=_G.AppData.ReadStr("Evenwho")
 		local Ens=_G.AppData.ReadInt("Evenmoney")
+		local txh=_G.AppData.Read('txhash')
+		local height=math.floor(_G.mylib.GetTxConFirmHeight(Unpack(txh)))
 		if r==0 then
 		_G.Asset.SendAppAsset(Evenaddress,Ewho,2*Ens)
-		Logstr=Logstr..'"last":"Win","back":"'..(2*Ens)..'","by":"'..Ewho..'",'
+		Logstr=Logstr..'"last":"Win","block":"'..height..'","back":"'..(2*Ens/100)..'","by":"'..Ewho..'",'
 		else
-		Logstr=Logstr..'"last":"Lose","back":"'..Ens..'","by":"'..Ewho..'",'
+		Logstr=Logstr..'"last":"Lose","block":"'..height..'","back":"'..(0-Ens/100)..'","by":"'..Ewho..'",'
 		end
 	end
 	SetRandom()
 	_G.AppData.Write('Evenwho',curaddr)
 	_G.AppData.Write('Evenmoney',ns)
-	Log(Logstr..'"newGame":"'..ns..'","newby":"'..curaddr..'"}')
+	Log(Logstr..'"newEven":"'..(ns/100)..'","newby":"'..curaddr..'","max":"'..(evenmax/100)..'"}')
 end
 }
 Main = function()
@@ -165,8 +169,7 @@ end
 f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000
 f0160000775469707777777777777777425441777777777777777763616e647a3252366d6a5300c817a804000000
 f01600007757774576656e77777777777777425441777777777777777763616e62484a6b695900e40b5402000000
-f0180a     --tipback=0.001
-f01800f0
+f0180a     --tipback=0.001  f01800f0  f01100f0
 f02200001100000000000000f0
 --]]
 Main()
