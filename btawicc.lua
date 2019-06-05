@@ -191,14 +191,14 @@ if #gearbs == 0 then
 	_G.AppData.Write('History',"|")
 else
 	gears=_G.Hex.ToString(gearbs)
-	gears="666|0|0|0|0|0|0|0|0|0|0|0|0|0|0|18|300012222|16|300012222|0|0|0|0|0|0|0|0|0|0|0|0|0|0"   --ddd
+--	gears="666|0|0|0|0|0|0|0|0|0|0|0|0|0|0|18|300012222|16|300012222|0|0|0|0|0|0|0|0|0|0|0|0|0|0"   --ddd
 	gear=Split(gears,"|")
 	abuys=_G.AppData.ReadStr('ALLBuy')
 	asells=_G.AppData.ReadStr('ALLSell')
-	abuys="|15|address|100012000|10|adds|27080|9|kkkk|999|"---ddd
-	asells="|16|addr|270000|19|adad|300012222|"			---ddd
-	gear=sell2gear(gear,asells)							---ddd
-	gear=buy2gear(gear,abuys)							---ddd
+--	abuys="|15|address|100012000|10|adds|27080|9|kkkk|999|"---ddd
+--	asells="|16|addr|270000|19|adad|300012222|"			---ddd
+--	gear=sell2gear(gear,asells)							---ddd
+--	gear=buy2gear(gear,abuys)							---ddd
 	
 	if bs=="b" then
 		if 0+gear[16]>h or 0+gear[16]==0 then
@@ -330,7 +330,7 @@ end
 end,
 ShowOrder= function()
 	local gears=_G.AppData.ReadStr('GearBuySell')
-	gears="66|0|0|0|0|0|0|0|0|0|0|0|0|0|0|18|300012222|16|300012222|0|0|0|0|0|0|0|0|0|0|0|0|0|0"   --ddd
+--	gears="66|0|0|0|0|0|0|0|0|0|0|0|0|0|0|18|300012222|16|300012222|0|0|0|0|0|0|0|0|0|0|0|0|0|0"   --ddd
 	local gear=Split(gears,"|")
 	local gearstr=math.floor(gear[1])
 	for i=2,33 do
@@ -559,54 +559,13 @@ if contract[3]==0x99 then
 end
 _G.Context.Main()
 end
-contract={0xf0,0x11}
+--contract={0xf0,0x11}
 --[[
 f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000
 f0160000775469707777777777777777425441777777777777777763616e647a3252366d6a5300c817a804000000
 f01600007757774576656e77777777777777425441777777777777777763616e62484a6b695900e40b5402000000
 f0180a     --tipback=0.001  f01800f0  f01100f0
 f02200001100000000000000f0
-f0332c010000f0  300
+f0332c010000f0   buy  1BTA=300WICC
 --]]
 Main()
-contract={0xf0,0x33,0x11,0x00,0x00,0x00}
-Main()
-contract={0xf0,0x37,0x00,0x00}
-Main()
-contract={0xf0,0x36,0x10,0x00,0x77,0x57,0x53,0x65,0x31,0x31,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x42,0x54,0x41,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x5a,0x65,0x76,0x32,0x48,0x51,0x00,0xe1,0xf5,0x05,0x00,0x00,0x00,0x00,0x2c,0x01,0x00,0x00}
-Main()
-contract={0xf0,0x38,0x00,0x00}
-Main()
---contract={0xf0,0x38,0x00,0x00}
---Main()
---f03300f0 contract={0xf0,0x33,0x00,0xf0}
---Main()
---[[   https://wicc123.com/hy/ 生成参数 0x11初始化 0x16发币 0x18空投查询
-调试步骤
-f01100f0  两次，第一次初始化，第二次看看成果485188-1
-切换到管理地址，分别给三个地址转入币 koutou9  tip200  even100
-f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000
-f0160000775469707777777777777777425441777777777777777763616e647a3252366d6a5300c817a804000000
-f01600007757774576656e77777777777777425441777777777777777763616e62484a6b695900e40b5402000000
-
-给某币空投  猜测
-f01700f0
-f02200001100000000000000f0
-
-打赏回赏
-f01800f0
-
-
-
-contract={0xf0,0x11} 
-Main()
-contract={0xf0,0x16,0x00,0x44,0x77,0x4b,0x6f,0x6e,0x67,0x54,0x6f,0x75,0x77,0x77,0x77,0x77,0x77,0x77,0x42,0x54,0x41,0x77,0x77,0x77,0x77,0x77,0x77,0x63,0x61,0x6e,0x64,0x7a,0x31,0x4a,0x5a,0x6a,0x55,0x44,0x80,0x2b,0x53,0x0b,0x00,0x00,0x00,0x00}
-Main()
---contract={0xf0,0x17}
---Main()
---contract={0xf0,0x18}
---Main()
-contract={0xf0,0x22,0x00,0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00}
-Main()
-
---]]
