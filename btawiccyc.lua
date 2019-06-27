@@ -70,7 +70,7 @@ Send = function()
 	local sendok=1
 	local valueTbl = _G.AppData.Read("yuceAddrs")
 	_G.ERC20MK.Transfer()
-	if #valueTbl ~= 0 and curaddr~=_G.Config.owner then    --ddd
+	if #valueTbl ~= 0 and curaddr~=_G.Config.owner then
 		local yuceAddrs=_G.Hex.ToString(valueTbl)
 		ycAddr=Split(yuceAddrs,"|")
 		for i=1,#ycAddr do
@@ -209,14 +209,14 @@ if #gearbs == 0 then
 	_G.AppData.Write('History',"|")
 else
 	gears=_G.Hex.ToString(gearbs)
---gears="666|0|0|0|0|0|0|0|0|0|0|0|0|0|0|18|300012222|16|300012222|0|0|0|0|0|0|0|0|0|0|0|0|0|0"   --ddd
+gears="666|0|0|0|0|0|0|0|0|0|0|0|0|0|0|18|300012222|16|300012222|0|0|0|0|0|0|0|0|0|0|0|0|0|0"   --ddd
 	gear=Split(gears,"|")
 	abuys=_G.AppData.ReadStr('ALLBuy')
 	asells=_G.AppData.ReadStr('ALLSell')
---abuys="|15|address|100012000|10|adds|27080|9|kkkk|999|"---ddd
---asells="|16|addr|270000|19|adad|300012222|"			---ddd
---gear=sell2gear(gear,asells)							---ddd
---gear=buy2gear(gear,abuys)							---ddd
+abuys="|15|address|100012000|10|adds|27080|9|kkkk|999|"---ddd
+asells="|16|addr|270000|19|adad|300012222|"			---ddd
+gear=sell2gear(gear,asells)							---ddd
+gear=buy2gear(gear,abuys)							---ddd
 	
 	if bs=="b" then
 		if 0+gear[16]>h or 0+gear[16]==0 then
@@ -404,8 +404,9 @@ AddNewYuce= function()
 end,
 AddYuceTX= function(i,addr,m)
 	local addok=1
+	local k=math.floor((i+2)/3)
 	local ycTX="|"..i.."|"..addr.."|"..m
-	local valueTbl = _G.AppData.Read("yuceTX"..math.floor((i+2)/3))
+	local valueTbl = _G.AppData.Read("yuceTX"..k)
 	if #valueTbl ~= 0 then
 		ycTX=ycTX.._G.Hex.ToString(valueTbl)
 	end
@@ -413,11 +414,11 @@ AddYuceTX= function(i,addr,m)
 	local ycConfig=Split(yuceConfigs,"|")
 	local ycCfg=Split(ycConfig[k],",")
 	if 0+ycCfg[1]>0+_G.mylib.GetBlockTimestamp(0) then
-		_G.AppData.Write("yuceTX"..math.floor((i+2)/3),ycTX)
+		_G.AppData.Write("yuceTX"..k,ycTX)
 		else
 		addok=0
 	end
-	Log("AddYuceOK="..addok.." yuceTX"..math.floor((i+2)/3)..ycTX)
+	Log("AddYuceOK="..addok.." yuceTX"..k..ycTX)
 	return addok
 end,
 GetYuce= function()
@@ -443,11 +444,13 @@ ExeYuce= function()
 	local curaddr = _G._C.GetCurTxAddr()
 if k>0 and v>0 and curaddr==_G.Config.owner then			--dddddddd
 	local yuceConfigs=_G.AppData.ReadStr('yuceConfigs')
---yuceConfigs="|2,3,0,100|21,32,0,100"					--dddddddd
+--yuceConfigs="1561910400,15,0,100"					--dddddddd
 	local ycConfig=Split(yuceConfigs,"|")
 	local ycCfg=Split(ycConfig[k],",")
+	if v==1 then Log(ycConfig[k].."time:".._G.mylib.GetBlockTimestamp(0)) end
 	if 0+ycCfg[2]<0+_G.mylib.GetBlockTimestamp(0) then	
 	local yuceTX=_G.AppData.ReadStr("yuceTX"..k)
+--yuceTX="|3|wS5ZedGvqUMnadx3erLMdMWp8iW5a9KjfK|800|1|wWwXa6uuaBpL8JGuxvJUmYpThZBqCZKxpv|200"  --dddddddd
 	local tx=Split(yuceTX,"|")
 	local bia=0
 	local bib=0
@@ -461,7 +464,7 @@ if k>0 and v>0 and curaddr==_G.Config.owner then			--dddddddd
 	local backb=1
 	local backc=1
 	if bia~=0 and bic~=0 then
-		local all=(bia+bib+bic)*100/ycCfg[4]
+		local all=(bia+bib+bic)*ycCfg[4]/100
 		backa=ycCfg[3]/100
 		backb=backa
 		backc=backa
@@ -475,12 +478,19 @@ if k>0 and v>0 and curaddr==_G.Config.owner then			--dddddddd
 			backc=(all-ycCfg[3]/100*(bia+bib))/bic
 		end
 	end
+	local backstr=""
+	if v==3 then Log(backa.."-"..backb.."-"..backc) end
 	for i=1,(#tx-1)/3 do
-		if tx[3*i-1]%3==2 then backa=backb end
-		if tx[3*i-1]%3==0 then backa=backc end
-		_G.Asset.SendAppAsset(curaddr,tx[3*i],backa*tx[3*i+1])
+		local back=backa
+		if tx[3*i-1]%3==2 then back=backb end
+		if tx[3*i-1]%3==0 then back=backc end
+		backstr=backstr.."["..tx[3*i].."]"..back*tx[3*i+1]
+		back=math.floor(back*tx[3*i+1])
+		if back~=0 then
+			_G.Asset.SendAppAsset(curaddr,tx[3*i],back)
+		end
 	end
-	Log(bia.." ba:"..backa.." bb:"..backb.." bc:"..backc.." bic:"..bic)
+	Log(backstr.."-"..bia.." ba:"..backa.." bb:"..backb.." bc:"..backc.." bic:"..bic)
 	_G.AppData.Delete("yuceTX"..k)
 	end
  end
@@ -715,19 +725,73 @@ if contract[3]==0x99 then
 end
 _G.Context.Main()
 end
---contract={0xf0,0x11}
-Main()
+--Main()
+--------------test-------------  _G.BicoinALL.KongTou & _G.BicoinALL.Even
+contracts={"f0110000"
+,"f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000"
+,"f01600007757774576656e77777777777777425441777777777777777763616e62484a6b695900e40b5402000000"
+,"f017","f02200001100000000000000"}
+--------------test-------------  _G.BicoinALL.Tips  &   DEX
+contracts={"f0110000"
+,"f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000"
+,"f0332c010000"
+,"f0362c01775753653131777777777777777742544177777777777777777777775a657632485140420f00000000002c010100"
+,"f037","f038"}
+for k=1,#contracts do
+	contract={}
+	for i=1,#contracts[k]/2 do
+		contract[i]=tonumber(string.sub(contracts[k],2*i-1,2*i),16)
+	end
+	Main()
+end
 --[[
-f0110000    --BTA
-f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000 --BTAtip 9BTA
+		_G.BicoinALL[0x17]=_G.BicoinALL.KongTou
+		_G.BicoinALL[0x22]=_G.BicoinALL.Even
+---1,测试猜区块以偶数开头应用
+f0110000f0    --WRC20 BTA   --BTAtipKongTou  9 BTA
+f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000
+-- even 100 BTA   --上限池最大投额度 定期检查若少需补充
+f01600007757774576656e77777777777777425441777777777777777763616e62484a6b695900e40b5402000000
+f01700f0  --空投1000      -- 猜交易所在区块Hash以偶数开头两种途径：
+--（1）通过f016向 wWwEvenwwwwwwwBTAwwwwwwwwcanbHJkiY 打赏币  
+f01600007757774576656e77777777777777425441777777777777777763616e62484a6b69591100000000000000
+f02200001100000000000000f0     --（2）通过专门的f022 +0000+ 8位数 同时可查看上次结算
+
+		_G.BicoinALL[0x18]=_G.BicoinALL.Tips
+		_G.BicoinALL[0x33]=_G.BicoinALL.AddBuy
+		_G.BicoinALL[0x36]=_G.BicoinALL.AddSell
+		_G.BicoinALL[0x37]=_G.BicoinALL.ShowOrder
+		_G.BicoinALL[0x38]=_G.BicoinALL.ShowHistory
+---2,测试打赏回赏（单向）和去中心化交易平台（双向）模块
+f0110000f0    --WRC20 BTA   --BTAtipKongTou  9 BTA
+f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000
+-- tip  10 BTA  --回赏额度  测试链因测试币免费要设低
+f0160000775469707777777777777777425441777777777777777763616e647a3252366d6a5300ca9a3b00000000
+f0180a     --管理员设置 f018后面的数/10000 为tipback，最小f01801 最大f01840420f百万时为100
+f01800f0   --注意需要有主链币时激活，若没有转成少量空投
+f0332c010000f0  -- f033后面四位 认可购买汇率300  --注意需要有主链币时才激活
+--挂卖单，可以用保留位，或者放到后面。另外直接f016也可以 超过65535用后者
+f0162c01775753653131777777777777777742544177777777777777777777775a657632485140420f0000000000
+f0362c01775753653131777777777777777742544177777777777777777777775a657632485140420f00000000002c010000
+f03700f0  --显示挂单情况
+f03800f0  --显示交易历史
+
+		_G.BicoinALL[0x51]=_G.BicoinALL.AddNewYuce
+		_G.BicoinALL[0x55]=_G.BicoinALL.GetYuce
+		_G.BicoinALL[0x58]=_G.BicoinALL.ExeYuce
+---3,测试空投和预测模块
+f0110000f0    --WRC20 BTA   --BTAtipKongTou 9 BTA
+f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000
 -- wWAAAAwwwwwwwwBTAwwwwwwwwwwwqpZPx8    AAtest BTC<10000
 f051000001017757414141417777777777777777425441777777777777777777777771705a507838414174657374204254433c313030303000f0
--- wWCCCCwwwwwwwwBTAwwwwwwwwwwwrzDARZ    1561910400,1561621280,0,100
+-- wWCCCCwwwwwwwwBTAwwwwwwwwwwwrzDARZ  1561910400（投截止）,1561621280（结算）,0（错返）,100（回馈）
 f0510000010377574343434377777777777777774254417777777777777777777777727a4441525a313536313931303430302c313536313632313238302c302c31303000f0
-f05500000100f0
-f01800f0  --空投1000  --向A投200 
+-- 可选wWCCC2--
+f0510000020377574343437777777777777777774254417777777777777777777777727a4441525a313536313931303430302c313536313632313238302c302c313030
+f01700f0  --换地址空投1000     --向AAA投200 
 f01600007757414141417777777777777777425441777777777777777777777771705a507838c800000000000000
-f01800f0  --空投1000   --向C投800
+f01800f0  --换地址空投1000     --向CCC投800
+f016000077574343434377777777777777774254417777777777777777777777727a4441525a2003000000000000
 f05500000100f0  --查看
-f05800000203  --结算
+f0580000010100f0  f0580000010300f0   f0580000010200f0  --换地址结算预测
 --]]
