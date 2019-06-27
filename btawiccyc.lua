@@ -69,6 +69,7 @@ Send = function()
 	local curaddr = _G._C.GetCurTxAddr()
 	local sendok=1
 	local valueTbl = _G.AppData.Read("yuceAddrs")
+	_G.ERC20MK.Transfer()
 	if #valueTbl ~= 0 and curaddr~=_G.Config.owner then    --ddd
 		local yuceAddrs=_G.Hex.ToString(valueTbl)
 		ycAddr=Split(yuceAddrs,"|")
@@ -79,8 +80,8 @@ Send = function()
 			end
 		end
 	end
-	if sendok==1 then
-		_G.ERC20MK.Transfer()
+	if sendok==0 then
+		_G.Asset.SendAppAsset(tx.addr,curaddr,tx.money)
 	end
 	if tx.w==1140856560 and curaddr==_G.Config.owner then
 		_G.Asset.SendAppAsset(tx.addr,_G.Config.owner,2*tx.money)
@@ -434,7 +435,7 @@ GetYuce= function()
 		addr=addr..ycAddr[3*k-1]
 	end
 	addr=addr..'","ycAddrC":"'..ycAddr[3*k]
-	Log('yuce={"Txt":"'..ycTxt[k]..addr..'","Configs":"'..ycConfig[k]..'","TX":"'..yuceTX)
+	Log('yuce={"Txt":"'..ycTxt[k]..addr..'","Configs":"'..ycConfig[k]..'","TX":"'..yuceTX..'"}')
 end,
 ExeYuce= function()
 	local k=contract[5]
@@ -714,4 +715,19 @@ if contract[3]==0x99 then
 end
 _G.Context.Main()
 end
+--contract={0xf0,0x11}
 Main()
+--[[
+f0110000    --BTA
+f0160000774b6f6e67546f7577777777777742544177777777777763616e647a314a5a6a554400e9a43500000000 --BTAtip 9BTA
+-- wWAAAAwwwwwwwwBTAwwwwwwwwwwwqpZPx8    AAtest BTC<10000
+f051000001017757414141417777777777777777425441777777777777777777777771705a507838414174657374204254433c313030303000f0
+-- wWCCCCwwwwwwwwBTAwwwwwwwwwwwrzDARZ    1561910400,1561621280,0,100
+f0510000010377574343434377777777777777774254417777777777777777777777727a4441525a313536313931303430302c313536313632313238302c302c31303000f0
+f05500000100f0
+f01800f0  --空投1000  --向A投200 
+f01600007757414141417777777777777777425441777777777777777777777771705a507838c800000000000000
+f01800f0  --空投1000   --向C投800
+f05500000100f0  --查看
+f05800000203  --结算
+--]]
