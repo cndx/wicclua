@@ -16,7 +16,7 @@ _G.Config={
     totalSupply = 21000000 * 100000000
 }
 ------------------------------------------------------------------------------------
---https://WiccM.com     BTA/WICC
+--https://WiccM.com   BTA/WICC  BTAmm.com txBTC.com
 MK_G_Context_Init = "83d3fc6c1a515035a26a1af8b2471ea7822b32910655941cce9c5c4728dcc4f2"
 MK_G_Hex = "174910d20ecd4d4c0b6e934308c69d93d7cb47acb0630af919034fe648586095"
 MK_G_Log = "dcf1b8f055a4226e9b1a9375bf6583b3d361a743bf406fb452c4da12f11eb1d7"
@@ -67,7 +67,21 @@ Send = function()
 	local Evenaddress="wWwEvenwwwwwwwBTAwwwwwwwwcanbHJkiY"
 	local Selladdress="wWSe11wwwwwwwwBTAwwwwwwwwwwwZev2HQ"
 	local curaddr = _G._C.GetCurTxAddr()
-	_G.ERC20MK.Transfer()
+	local sendok=1
+	local valueTbl = _G.AppData.Read("yuceAddrs")
+	if #valueTbl ~= 0 and curaddr~=_G.Config.owner then    --ddd
+		local yuceAddrs=_G.Hex.ToString(valueTbl)
+		ycAddr=Split(yuceAddrs,"|")
+		for i=1,#ycAddr do
+			if ycAddr[i]~=nil and ycAddr[i]==tx.addr then
+				sendok=_G.BicoinALL.AddYuceTX(i,curaddr,tx.money)
+				break
+			end
+		end
+	end
+	if sendok==1 then
+		_G.ERC20MK.Transfer()
+	end
 	if tx.w==1140856560 and curaddr==_G.Config.owner then
 		_G.Asset.SendAppAsset(tx.addr,_G.Config.owner,2*tx.money)
 	end
@@ -82,19 +96,7 @@ Send = function()
 			local h=math.floor((tx.w-5872)/65536)
 			_G.BicoinALL.BSmatch("s",h,curaddr,tx.money)
 		end		
-	end
-	local valueTbl = _G.AppData.Read("yuceAddrs")
-	if #valueTbl ~= 0 and curaddr~=_G.Config.owner then
-		local yuceAddrs=_G.Hex.ToString(valueTbl)
-		local wz=0
-		ycAddr=Split(yuceAddrs,"|")
-		for i=1,#ycAddr do
-			if ycAddr[i]==tx.addr then
-				_G.BicoinALL.AddYuceTX(i,curaddr,tx.money)
-				break
-			end
-		end
-	end
+	end	
 end,
 KongTou = function()
 	local KTaddress="wKongTouwwwwwwBTAwwwwwwcandz1JZjUD"
@@ -364,15 +366,19 @@ AddNewYuce= function()
 	local k=contract[5]
 	if k>0 and curaddr==_G.Config.owner then	  ---dddd
 	local valueTbl = _G.AppData.Read("yuceTxts")
+	local yuceTxts='|'
+	local yuceAddrs='|||'
+	local yuceConfigs='|'
 	if #valueTbl == 0 then
 		_G.AppData.Write('yuceTxts','|')
 		_G.AppData.Write('yuceAddrs','|||')
 		_G.AppData.Write('yuceConfigs','|')
+		else
+		yuceTxts=_G.AppData.ReadStr('yuceTxts')
+		yuceAddrs=_G.AppData.ReadStr('yuceAddrs')
+		yuceConfigs=_G.AppData.ReadStr('yuceConfigs')
 	end
 	local ycs=_G.Hex:New(contract):Fill({"w",5,"abc",1,"addr","34","txtfig",""..(#contract-40)})
-	local yuceTxts=_G.AppData.ReadStr('yuceTxts')
-	local yuceAddrs=_G.AppData.ReadStr('yuceAddrs')
-	local yuceConfigs=_G.AppData.ReadStr('yuceConfigs')
 --yuceTxts="|rr|bd"  yuceAddrs="|||Wii|Wcd|wdd" yuceConfigs="|2,3,0,100|21,32,0,100" --dddddddd
 --f051[0000]  [k] where  [abc:01,02 or 03]  01 txt 03 config
 	local ycTxt=Split(yuceTxts,"|")
@@ -396,6 +402,7 @@ AddNewYuce= function()
 	end
 end,
 AddYuceTX= function(i,addr,m)
+	local addok=1
 	local ycTX="|"..i.."|"..addr.."|"..m
 	local valueTbl = _G.AppData.Read("yuceTX"..math.floor((i+2)/3))
 	if #valueTbl ~= 0 then
@@ -404,10 +411,13 @@ AddYuceTX= function(i,addr,m)
 	local yuceConfigs=_G.AppData.ReadStr('yuceConfigs')
 	local ycConfig=Split(yuceConfigs,"|")
 	local ycCfg=Split(ycConfig[k],",")
-	if 0+ycCfg[1]<2222222 then
+	if 0+ycCfg[1]>0+_G.mylib.GetBlockTimestamp(0) then
 		_G.AppData.Write("yuceTX"..math.floor((i+2)/3),ycTX)
-		Log("yuceTX"..math.floor((i+2)/3)..ycTX)
+		else
+		addok=0
 	end
+	Log("AddYuceOK="..addok.." yuceTX"..math.floor((i+2)/3)..ycTX)
+	return addok
 end,
 GetYuce= function()
 	local k=contract[5]
@@ -435,7 +445,7 @@ if k>0 and v>0 and curaddr==_G.Config.owner then			--dddddddd
 --yuceConfigs="|2,3,0,100|21,32,0,100"					--dddddddd
 	local ycConfig=Split(yuceConfigs,"|")
 	local ycCfg=Split(ycConfig[k],",")
-	if 0+ycCfg[2]<2222222 then	
+	if 0+ycCfg[2]<0+_G.mylib.GetBlockTimestamp(0) then	
 	local yuceTX=_G.AppData.ReadStr("yuceTX"..k)
 	local tx=Split(yuceTX,"|")
 	local bia=0
@@ -452,8 +462,8 @@ if k>0 and v>0 and curaddr==_G.Config.owner then			--dddddddd
 	if bia~=0 and bic~=0 then
 		local all=(bia+bib+bic)*100/ycCfg[4]
 		backa=ycCfg[3]/100
-		backb=ycCfg[3]/100
-		backc=ycCfg[3]/100
+		backb=backa
+		backc=backa
 		if v==1 then
 			backa=(all-ycCfg[3]/100*(bib+bic))/bia
 		end
@@ -477,7 +487,13 @@ end
 }
 function table2str(tb)
 	local tbstr=tb[1]
+	if tbstr==nil then
+		tbstr=""
+	end
 	for i=2,#tb do
+		if tb[i]==nil then
+			tb[i]=""
+		end
 		tbstr=tbstr.."|"..tb[i]		
 	end
 	return tbstr
@@ -698,15 +714,4 @@ if contract[3]==0x99 then
 end
 _G.Context.Main()
 end
---contract={0xf0,0x11}
 Main()
---[[
-contract={0xf0,0x51,0x00,0x00,0x02,0x01,0x77,0x57,0x53,0x65,0x31,0x31,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x42,0x54,0x41,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x5a,0x65,0x76,0x32,0x48,0x51,0x38,0x2c,0x36,0x2c,0x31,0x30,0x30,0x2c}
-Main()
-contract={0xf0,0x51,0x00,0x00,0x02,0x03,0x77,0x57,0x53,0x65,0x31,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x42,0x54,0x41,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x77,0x5a,0x65,0x76,0x32,0x48,0x51,0x38,0x2c,0x36,0x2c,0x30,0x2c,0x31,0x30,0x30}
-Main()
-contract={0xf0,0x55,0x00,0x00,0x02}
-Main()
-contract={0xf0,0x58,0x00,0x00,0x02,0x03}
-Main()
---]]
